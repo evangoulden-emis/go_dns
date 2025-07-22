@@ -12,6 +12,7 @@ func main() {
 	// Define a command-line flag for FQDNs
 	fqdnsInput := flag.String("fqdns", "", "Comma-separated list of FQDNs to query")
 	dnsServer := flag.String("server", "8.8.8.8:53", "DNS server to query")
+	recursionDesired := flag.Bool("recursion", true, "Whether to enable recursion")
 	flag.Parse()
 
 	if *fqdnsInput == "" {
@@ -22,15 +23,15 @@ func main() {
 	fqdns := strings.Split(*fqdnsInput, ",")
 
 	for _, fqdn := range fqdns {
-		queryDNS(strings.TrimSpace(fqdn), *dnsServer)
+		queryDNS(strings.TrimSpace(fqdn), *dnsServer, *recursionDesired)
 	}
 }
 
-func queryDNS(fqdn, server string) {
+func queryDNS(fqdn, server string, recursionDesired bool) {
 	c := new(dns.Client)
 	m := new(dns.Msg)
 
-	m.RecursionDesired = true
+	m.RecursionDesired = recursionDesired
 	recordTypes := []uint16{dns.TypeA, dns.TypeAAAA, dns.TypeCNAME, dns.TypeMX, dns.TypeNS, dns.TypeSOA, dns.TypeTXT}
 	for _, recordType := range recordTypes {
 		m.SetQuestion(dns.Fqdn(fqdn), recordType)
