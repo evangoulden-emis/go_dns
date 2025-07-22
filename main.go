@@ -35,7 +35,6 @@ func queryDNS(fqdn, server string, recursionDesired bool) {
 	for _, recordType := range recordTypes {
 		m.SetQuestion(dns.Fqdn(fqdn), recordType)
 		m.RecursionDesired = recursionDesired
-		m.Question = append(m.Question, dns.Question{Name: dns.Fqdn(fqdn), Qtype: recordType, Qclass: dns.ClassINET})
 		r, _, err := c.Exchange(m, server)
 		if err != nil {
 			fmt.Printf("Error querying %s: %v\n", fqdn, err)
