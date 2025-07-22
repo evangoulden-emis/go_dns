@@ -12,7 +12,7 @@ func main() {
 	// Define a command-line flag for FQDNs
 	fqdnsInput := flag.String("fqdns", "", "Comma-separated list of FQDNs to query")
 	dnsServer := flag.String("server", "8.8.8.8:53", "DNS server to query")
-	recursionDesired := flag.Bool("recursion", true, "Whether to enable recursion")
+	recursionDesired := flag.Bool("recursion", false, "Whether to enable recursion")
 	flag.Parse()
 
 	if *fqdnsInput == "" {
